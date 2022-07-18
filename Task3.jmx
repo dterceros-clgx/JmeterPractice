@@ -41,12 +41,12 @@
           </elementProp>
           <elementProp name="DURATION" elementType="Argument">
             <stringProp name="Argument.name">DURATION</stringProp>
-            <stringProp name="Argument.value">${__P(DURATION,30)}</stringProp>
+            <stringProp name="Argument.value">${__P(DURATION,10)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PREDEFINED_DATE" elementType="Argument">
             <stringProp name="Argument.name">PREDEFINED_DATE</stringProp>
-            <stringProp name="Argument.value">2022/06/08</stringProp>
+            <stringProp name="Argument.value">2022/06/30</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="EDITOR_USERNAME" elementType="Argument">
@@ -71,12 +71,12 @@
           </elementProp>
           <elementProp name="RANDOM_DATE_START" elementType="Argument">
             <stringProp name="Argument.name">RANDOM_DATE_START</stringProp>
-            <stringProp name="Argument.value">2022/06/01</stringProp>
+            <stringProp name="Argument.value">2022/06/26</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="RANDOM_DATE_END" elementType="Argument">
             <stringProp name="Argument.name">RANDOM_DATE_END</stringProp>
-            <stringProp name="Argument.value">2022/06/26</stringProp>
+            <stringProp name="Argument.value">2022/07/10</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -118,8 +118,8 @@
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${USERS}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${RAMPUP}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">${DURATION}</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
@@ -139,7 +139,7 @@
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/blogEngine</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
@@ -211,14 +211,14 @@
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop 50 times" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">50</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
         </LoopController>
         <hashTree>
           <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Anonymous" enabled="true">
             <intProp name="InterleaveControl.style">1</intProp>
           </RandomController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Home Page" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Home Page" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -274,7 +274,7 @@
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get POSTID" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">POSTID</stringProp>
-                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/.*&quot;&gt;Post(\d+)&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">0</stringProp>
@@ -325,7 +325,7 @@
               </ModuleController>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Random date" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Random date" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -378,10 +378,19 @@
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get FIRST_POSTID" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">FIRST_POSTID</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get POSTID" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">POSTID</stringProp>
-                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/.*&quot;&gt;Post(\d+)&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">0</stringProp>
@@ -422,7 +431,7 @@
               </ModuleController>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Predefined Date" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Predefined Date" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -477,10 +486,19 @@
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get FIRST_POSTID" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">FIRST_POSTID</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get POSTID" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">POSTID</stringProp>
-                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/.*&quot;&gt;Post(\d+)&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">0</stringProp>
@@ -570,7 +588,7 @@
               </ModuleController>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Search By Name" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Search By Name" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -695,10 +713,19 @@
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get FIRST_POSTID" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">FIRST_POSTID</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(\d+)&quot;&gt;&lt;br \/&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get POSTID" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">POSTID</stringProp>
-                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/.*&quot;&gt;Post(\d+)&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(\d+)&quot;&gt;&lt;br \/&gt;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">0</stringProp>
@@ -769,10 +796,19 @@
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get FIRST_POSTID" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">FIRST_POSTID</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Get POSTID" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">POSTID</stringProp>
-                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/.*&quot;&gt;Post(\d+)&lt;\/a&gt;</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;a href=&quot;\/blogEngine\/post\/postab(.*)&quot;&gt;Post\d+&lt;\/a&gt;</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                   <stringProp name="RegexExtractor.match_number">0</stringProp>
@@ -786,7 +822,7 @@
                 </DebugPostProcessor>
                 <hashTree/>
               </hashTree>
-              <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Open Post" enabled="true">
+              <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Open Post" enabled="false">
                 <collectionProp name="ModuleController.node_path">
                   <stringProp name="764597751">Test Plan</stringProp>
                   <stringProp name="764597751">Test Plan</stringProp>
@@ -796,7 +832,7 @@
               </ModuleController>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Contacts" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Contacts" enabled="false">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -3393,6 +3429,12 @@
           <intProp name="InterleaveControl.style">1</intProp>
         </RandomController>
         <hashTree>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="don&apos;t open random page" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree/>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="if PAGEID IS FOUND" enabled="true">
             <stringProp name="IfController.condition">${__jexl3(${PAGEID} &gt;= 0)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -3463,6 +3505,12 @@
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="don&apos;t open post" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">0</stringProp>
+          </TestAction>
+          <hashTree/>
           <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Open Post" enabled="true">
             <intProp name="InterleaveControl.style">1</intProp>
           </RandomController>
@@ -3472,7 +3520,7 @@
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="open post ${POSTID}" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="open post ${FIRST_POSTID}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -3480,7 +3528,7 @@
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol">${PROTOCOL}</stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">/blogEngine/post/postab${POSTID}</stringProp>
+                <stringProp name="HTTPSampler.path">/blogEngine/post/postab${FIRST_POSTID}</stringProp>
                 <stringProp name="HTTPSampler.method">GET</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -3555,6 +3603,12 @@
                 </DebugPostProcessor>
                 <hashTree/>
               </hashTree>
+              <RegExUserParameters guiclass="RegExUserParametersGui" testclass="RegExUserParameters" testname="RegEx User Parameters" enabled="true">
+                <stringProp name="RegExUserParameters.regex_ref_name"></stringProp>
+                <stringProp name="RegExUserParameters.param_names_gr_nr"></stringProp>
+                <stringProp name="RegExUserParameters.param_values_gr_nr"></stringProp>
+              </RegExUserParameters>
+              <hashTree/>
             </hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Open Random Post" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -3650,6 +3704,12 @@
             <intProp name="InterleaveControl.style">1</intProp>
           </RandomController>
           <hashTree>
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="don&apos;t comment" enabled="true">
+              <intProp name="ActionProcessor.action">1</intProp>
+              <intProp name="ActionProcessor.target">0</intProp>
+              <stringProp name="ActionProcessor.duration">0</stringProp>
+            </TestAction>
+            <hashTree/>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="post comment" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
